@@ -181,7 +181,7 @@ namespace Awesomi.Data
 				IList<Parameter> outputParams = sp.Parameters.Where(p => p.IsOutput).ToList();
 #>
 
-			public static Sql <#= sp.Name #>(<#= string.Join(", ", inputParams.Select(p => string.Format("{0} {1}", p.Type, p.AsVariable()))) #><#= outputParams.Count > 0 ? ", " : string.Empty #><#= string.Join(", ", outputParams.Select(p => string.Format("out SqlParameter {0}", p.AsVariable()))) #>)
+			public static Sql <#= sp.Name #>(<#= string.Join(", ", inputParams.Select(p => string.Format("{0} {1}", p.Type, p.AsVariable()))) #><#= outputParams.Count > 0 && inputParams.Count > 0 ? ", " : string.Empty #><#= string.Join(", ", outputParams.Select(p => string.Format("out SqlParameter {0}", p.AsVariable()))) #>)
 			{
 <#+
 				foreach(Parameter p in outputParams)
