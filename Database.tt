@@ -1,0 +1,73 @@
+<#@ include file="PetaPoco.Core.ttinclude" #>
+<#
+	// Settings
+    ConnectionStringName = "lab";			// Uses last connection string in config if not specified
+    Namespace = "Test.Models";
+    RepoName = "";
+    GenerateOperations = true;
+	GeneratePocos = true;
+	GenerateCommon = true;
+	ClassPrefix = "";
+	ClassSuffix = "";
+	TrackModifiedColumns = true;
+	IncludeViews = true;
+     // Read schema
+	var tables = LoadTables();  
+
+	List<string> timesheet = new List<string> {
+		 "Unit"
+		,"Extruder" 
+		,"Exempt"
+		,"Line" 
+		,"LineTx"
+		,"LineHistory"
+		,"LineStatus"
+		,"LineOperation"
+		,"Lineload Query"
+		,"SolutionTest"
+		,"SolutionRecipe"
+		,"SolutionBatch"
+		,"System"
+		,"Booster"
+		,"Reading"
+		,"ReadingField"
+		,"ReadingTag"
+		,"RecipeReading"
+		,"CasingTest" 
+		,"CasingGroup"
+		,"Conversion"
+		,"OilSTD"
+		,"Sample"
+		,"Parameter" 
+		,"ProductCode"
+		,"ProductCodeTx"
+		,"Deck"
+		,"Slide" 
+		,"Series"
+		,"SlideSeries"
+		,"Status"
+		,"Person"
+	}; 
+
+	foreach (var table in tables)
+		table.Ignore = !timesheet.Contains(table.Name);
+	
+	tables["__RefactorLog"].Ignore = true;
+	tables["sysdiagrams"].Ignore = true;
+
+	tables["Conversion"]["ConversionState"].PropertyType = "ConversionStates";
+/*
+	// Tweak Schema
+	tables["tablename"].Ignore = true;							// To ignore a table
+	tables["tablename"].ClassName = "newname";					// To change the class name of a table
+	tables["tablename"]["columnname"].Ignore = true;			// To ignore a column
+	tables["tablename"]["columnname"].PropertyName="newname";	// To change the property name of a column
+	tables["tablename"]["columnname"].PropertyType="bool";		// To change the property type of a column
+*/
+
+	// Generate output
+	if (tables.Count>0)
+	{
+#>
+<#@ include file="PetaPoco.Generator.ttinclude" #>
+<# } #>
